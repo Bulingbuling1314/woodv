@@ -15,11 +15,13 @@ var _icon = _interopRequireDefault(require("./components/icon"));
 
 var _button = _interopRequireDefault(require("./components/button"));
 
-var _checkboxGroup = _interopRequireDefault(require("./components/checkbox-group"));
+var _collapseGroup = _interopRequireDefault(require("./components/collapse-group"));
+
+var _collapse = _interopRequireDefault(require("./components/collapse"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const components = [_input.default, _icon.default, _button.default, _checkbox.default, _checkboxGroup.default];
+const components = [_input.default, _icon.default, _button.default, _checkbox.default, _collapse.default, _collapseGroup.default];
 
 var _default = Vue => {
   components.map(item => {

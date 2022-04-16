@@ -1,0 +1,52 @@
+export default {
+    name: "WCollapseGroup",
+    module: {
+        prop: 'value',
+        event: 'change'
+    },
+    data() {
+        return {
+            model: {
+                value: []
+            }
+        };
+    },
+    provide() {
+        return {
+            provideDisabled: this.disabled,
+            provideValue: this.model
+        };
+    },
+
+    watch: {
+        value(value) {
+            this.model.value = value;
+            this.$emit("change", this.model.value);
+        }
+    },
+    created() {
+        this.model.value = this.value;
+    },
+    props: {
+        value: {
+            type: Array,
+            default: () => []
+        },
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+    },
+    render(h) {
+        return h(
+            "div",
+            {
+                class: {
+                    "woo-collapse-group": true,
+                },
+                on: this.$listeners
+            },
+            this.$slots.default
+        );
+    }
+};
