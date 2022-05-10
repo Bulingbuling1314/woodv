@@ -7,11 +7,16 @@ export default {
     },
     data() {
         return {
-            index: null
+            index: null,
+            bodyOffsetHeight: 0
         }
     },
     inject: {
         provideDisabled: {
+            type: Boolean,
+            default: false
+        },
+        provideAccordion: {
             type: Boolean,
             default: false
         },
@@ -59,8 +64,23 @@ export default {
         },
     },
     render(h) {
-        const { value, collapseKey, bordered, disabled, showArrow, expandIconPosition, header, provideValue, provideDisabled } = this
-
+        const { value, collapseKey, bordered, disabled, showArrow, expandIconPosition, header, provideValue, provideAccordion, provideDisabled } = this
+        // 如果开启手风琴模式
+        if(provideAccordion) {
+            if(provideValue.value.length > 1) {
+                provideValue.value.splice(1)
+                setTimeout(() => {
+                    const currentCollapse = document.querySelector(`div[collapseindex='1']`)
+                    this.bodyOffsetHeight = currentCollapse.offsetHeight
+                    currentCollapse.setAttribute('style', `opacity: 1;height: ${this.bodyOffsetHeight}px;`)
+                    provideValue.value.filter(item => item !== collapseKey).map((item, index) => {
+                        const itemCollapse = document.querySelector(`div[collapseindex='${item}']`)
+                        itemCollapse.setAttribute('style', `height: 0;`)
+                        provideValue.value.splice(index, 1)
+                    })
+                })
+            }
+        }
         const child = [
             h(
                 'div',
@@ -69,37 +89,52 @@ export default {
                         'woo-collapse-header': true,
                         'woo-collapse-disabled': disabled || provideDisabled,
                         'woo-collapse-icon-none': !showArrow,
-                        'woo-collapse-icon-right': expandIconPosition === 'right'
+                        'woo-collapse-icon-right': expandIconPosition === 'right',
+                        
                     },
                     attrs: {
                         disabled: this.disabled
                     },
                     on: {
                         click: (e) => {
-                            if (this.disabled) {
+                            if (this.disabled || !provideValue) {
                                 return;
+                            }
+                            if(!collapseKey) {
+                                throw new Error('the w-collapse-panel is should a collapseKey!')
                             }
                             e.target.classList.add('woo-collapse-active')
                             const currentCollapse = document.querySelector(`div[collapseindex='${collapseKey}']`)
                             let index = provideValue.value.indexOf(collapseKey)
                             if (provideValue.value.includes(collapseKey)) {
-                                currentCollapse.setAttribute('style', `height: 0;`)
-                                this.index = null
-                                if (index > -1) {
-                                    provideValue.value.splice(index, 1)
-                                }
+                                currentCollapse.setAttribute('style', `height: auto;`)
+                                this.bodyOffsetHeight = currentCollapse.offsetHeight
+                                currentCollapse.setAttribute('style', `opacity: 1;height: ${this.bodyOffsetHeight}px;`)
+                                setTimeout(() => {
+                                    if (index > -1) {
+                                        this.index = null
+                                        provideValue.value.splice(index, 1)
+                                        currentCollapse.setAttribute('style', `height: 0;`)
+                                    }
+                                })
                             } else {
                                 currentCollapse.setAttribute('style', `height: auto;`)
-                                const offsetHeight = currentCollapse.offsetHeight
+                                this.bodyOffsetHeight = currentCollapse.offsetHeight
                                 currentCollapse.setAttribute('style', `height: 0;`)
 
                                 setTimeout(() => {
-                                    currentCollapse.setAttribute('style', `opacity: 1;height: ${offsetHeight}px;`)
+                                    if(provideAccordion) {
+                                        provideValue.value.filter(item => item !== collapseKey).map((item, index) => {
+                                            const itemCollapse = document.querySelector(`div[collapseindex='${item}']`)
+                                            itemCollapse.setAttribute('style', `height: 0;`)
+                                            provideValue.value.splice(index, 1)
+                                        })
+                                    }
                                     this.index = collapseKey
                                     provideValue.value.push(collapseKey)
+                                    currentCollapse.setAttribute('style', `opacity: 1;height: ${this.bodyOffsetHeight}px;`)
                                 })
                             }
-                            this.$emit('change', provideValue.value)
                         }
                     }
                 },
@@ -118,7 +153,8 @@ export default {
 
                             },
                             style: {
-                                textAlign: 'left'
+                                textAlign: 'left',
+                                'user-select': 'none'
                             }
                         },
                         header
@@ -133,7 +169,7 @@ export default {
                         'woo-collapse-body-open': this.index === collapseKey || provideValue.value.includes(collapseKey)
                     },
                     style: {
-                        height: this.index === collapseKey || provideValue.value.includes(collapseKey) ? '100px' : 0
+                        height: this.index === collapseKey || provideValue.value.includes(collapseKey) ? `${this.bodyOffsetHeight > 0  ? this.bodyOffsetHeight + 'px' : 'auto'}` : 0
                     },
                     attrs: {
                         collapseIndex: collapseKey

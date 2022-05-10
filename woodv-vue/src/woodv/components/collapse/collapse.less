@@ -1,70 +1,72 @@
-.woo-collapse {
-  position: relative;
-
-  .woo-collapse-header {
-    position: relative;
-    height: 42px;
-    line-height: 42px;
-    padding: 0 15px 0 35px;
-    color: #333;
-    background-color: #FAFAFA;
-    cursor: pointer;
-    font-size: 14px;
-    overflow: hidden;
-
-    .woo-collapse-arrow {
-      position: absolute;
-      top: 50%;
-      left: 15px;
-      font-size: 16px;
-      transform: translateY(-50%) rotate(0deg);
-      transition: all 0.3s linear;
+.woo-collapse-group {
+    .woo-collapse {
+      position: relative;
+    
+      .woo-collapse-header {
+        position: relative;
+        height: 42px;
+        line-height: 42px;
+        padding: 0 15px 0 35px;
+        color: #333;
+        background-color: #FAFAFA;
+        cursor: pointer;
+        font-size: 14px;
+        overflow: hidden;
+    
+        .woo-collapse-arrow {
+          position: absolute;
+          top: 50%;
+          left: 15px;
+          font-size: 16px;
+          transform: translateY(-50%) rotate(0deg);
+          transition: all 0.3s linear;
+        }
+    
+        .woo-collapse-icon-rotate {
+          transform: translateY(-50%) rotate(90deg);
+        }
+      }
+    
+      .woo-collapse-icon-none {
+        padding: 0 15px 0 15px;
+    
+        .woo-collapse-arrow {
+          display: none;
+        }
+      }
+    
+      .woo-collapse-icon-right {
+        padding: 0 35px 0 15px;
+    
+        .woo-collapse-arrow {
+          left: auto;
+          right: 15px;
+        }
+      }
+    
+      .woo-collapse-disabled {
+        border-color: #eee;
+        background-color: #FBFBFB;
+        color: #d2d2d2;
+        cursor: not-allowed;
+        opacity: 1;
+      }
+    
+      .woo-collapse-body {
+        background-color: #fff;
+        font-size: 14px;
+        text-align: left;
+        overflow: hidden;
+        transition: height 0.3s linear;
+        will-change: height;
+      }
+    
+      .woo-collapse-body-open {
+        height: auto;
+      }
     }
-
-    .woo-collapse-icon-rotate {
-      transform: translateY(-50%) rotate(90deg);
+    
+    .woo-collapse-border {
+      border: 1px solid #eee;
     }
-  }
-
-  .woo-collapse-icon-none {
-    padding: 0 15px 0 15px;
-
-    .woo-collapse-arrow {
-      display: none;
-    }
-  }
-
-  .woo-collapse-icon-right {
-    padding: 0 35px 0 15px;
-
-    .woo-collapse-arrow {
-      left: auto;
-      right: 15px;
-    }
-  }
-
-  .woo-collapse-disabled {
-    border-color: #eee;
-    background-color: #FBFBFB;
-    color: #d2d2d2;
-    cursor: not-allowed;
-    opacity: 1;
-  }
-
-  .woo-collapse-body {
-    background-color: #fff;
-    font-size: 14px;
-    text-align: left;
-    overflow: hidden;
-    transition: height 0.3s linear;
-    will-change: height;
-  }
-
-  .woo-collapse-body-open {
-    height: auto;
-  }
-}
-
-.woo-collapse-border {
-  border: 1px solid #eee;
 }

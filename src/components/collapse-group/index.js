@@ -14,6 +14,7 @@ export default {
     provide() {
         return {
             provideDisabled: this.disabled,
+            provideAccordion: this.accordion,
             provideValue: this.model
         };
     },
@@ -36,6 +37,10 @@ export default {
             type: Boolean,
             default: false
         },
+        accordion: {
+            type: Boolean,
+            default: false
+        }
     },
     render(h) {
         return h(

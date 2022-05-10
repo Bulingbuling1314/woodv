@@ -22,6 +22,7 @@ var _default2 = {
   provide() {
     return {
       provideDisabled: this.disabled,
+      provideAccordion: this.accordion,
       provideValue: this.model
     };
   },
@@ -44,6 +45,10 @@ var _default2 = {
       default: () => []
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    accordion: {
       type: Boolean,
       default: false
     }
